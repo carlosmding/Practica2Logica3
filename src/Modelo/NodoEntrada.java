@@ -12,18 +12,23 @@ package Modelo;
 public class NodoEntrada<T extends Comparable> extends NodoAVL {
     
     private String significado;
+    private String referencias;
     private NodoAVL sinonimos;
     private NodoAVL antonimos;
     
-    public NodoEntrada(T dato, String sig, NodoAVL sin, NodoAVL ant ) {
+    public NodoEntrada(T dato, String ref, String sig, NodoAVL sin, NodoAVL ant ) {
         super(dato);
+        this.referencias = ref;
         this.significado = sig;
         this.sinonimos = sin;
         this.antonimos = ant;
     }
-    
-    
 
+    public NodoEntrada(Comparable dato) {
+        super(dato);
+    }
+    
+   
     public String getSignificado() {
         return significado;
     }
@@ -47,7 +52,14 @@ public class NodoEntrada<T extends Comparable> extends NodoAVL {
     public void setAntonimos(NodoAVL antonimos) {
         this.antonimos = antonimos;
     }
-    
+
+    public String getReferencias() {
+        return referencias;
+    }
+
+    public void setReferencias(String referencias) {
+        this.referencias = referencias;
+    }
     
     
 }

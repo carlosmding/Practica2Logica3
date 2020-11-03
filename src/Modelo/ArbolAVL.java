@@ -22,6 +22,8 @@
  */
 package Modelo;
 
+import java.util.Stack;
+
 /**
  *
  * @author cadav
@@ -37,8 +39,6 @@ public class ArbolAVL<T extends Comparable> {
     }
 
     public NodoAVL insertarDato(T dato) {
-
-        System.out.println("dato ingresado>>> " + dato);
         NodoAVL nodoAInsertar = new NodoAVL(dato);
         if (root == null) {
             root = nodoAInsertar;
@@ -287,5 +287,7 @@ public class ArbolAVL<T extends Comparable> {
     public NodoAVL getRoot() {
         return root;
     }
+    
+    
 
 }

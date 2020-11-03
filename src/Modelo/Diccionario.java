@@ -22,10 +22,8 @@
  */
 package Modelo;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.util.*;
 
 /**
  *
@@ -33,16 +31,17 @@ import java.io.IOException;
  */
 public class Diccionario<T extends Comparable> {
 
-    NodoEntrada root;
-    NodoEntrada ult;
-    NodoEntrada x;
-    int cantidad;
+    private NodoEntrada root;
+    private NodoEntrada ult;
+    private NodoEntrada x;
+    private int cantidad;
 
     public Diccionario() {
     }
 
-    public NodoEntrada insertarEntrada(NodoEntrada nodoAInsertar) {
 
+    public NodoEntrada insertarEntrada(NodoEntrada nodoAInsertar) {
+        System.out.println("Palabra de la entrada: " + nodoAInsertar.getDato());
         if (root == null) {
             root = nodoAInsertar;
             return root;
@@ -294,54 +293,46 @@ public class Diccionario<T extends Comparable> {
     public void load() throws FileNotFoundException, IOException, Exception {
         BufferedReader in = new BufferedReader(new FileReader("Palabras.dic"));
         String linea;
-        NodoAVL raizSinonimos = new NodoAVL (null);
-        NodoAVL raizAntonimos = new NodoAVL (null);
-        
+
         while ((linea = in.readLine()) != null) {
-            String palabra, otros, significado="", sinonimos="", antonimos="";
+            NodoAVL raizSinonimos = new NodoAVL(null);
+            NodoAVL raizAntonimos = new NodoAVL(null);
+            String palabra, otros, referencias = "", significado = "", sinonimos = "", antonimos = "";
             try {
                 palabra = (linea.split("\\/"))[0];
-                System.out.println("Palabra: " + palabra);
                 otros = (linea.split("\\/"))[1];
-                System.out.println("Sobrante> " + otros);
-
                 try {
                     if (otros != "") {
-                        significado = (otros.split("\\:"))[1];
-                        sinonimos = (otros.split("\\:"))[2];
-                        antonimos = (otros.split("\\:"))[3];
-                        System.out.println(significado + "" + sinonimos + "" + antonimos);
-                        
+                        referencias = (otros.split("\""))[0];
+                        significado = (otros.split("\""))[1];
+                        sinonimos = (otros.split("\""))[3];
+                        antonimos = (otros.split("\""))[5];
+
                         //arreglo de sinonimos
-                        String sin [] = sinonimos.split("\\,");
+                        String sin[] = sinonimos.split("\\,");
                         ArbolAVL arbolSinonimos = new ArbolAVL();
-                        for(int i=0; i<sin.length; i++){
+                        for (int i = 0; i < sin.length; i++) {
                             arbolSinonimos.insertarDato(sin[i]);
                             //pendiente quitar los espacios y las comillas    
                         }
                         raizSinonimos = arbolSinonimos.getRoot();
 
                         //arreglo de antonimos
-                        String ant [] = antonimos.split("\\,");
+                        String ant[] = antonimos.split("\\,");
                         ArbolAVL arbolAntonimos = new ArbolAVL();
-                        for(int i=0; i<ant.length; i++){
+                        for (int i = 0; i < ant.length; i++) {
                             arbolAntonimos.insertarDato(ant[i]);
                             //pendiente quitar los espacios y las comillas    
                         }
                         raizAntonimos = arbolAntonimos.getRoot();
                     }
                 } catch (Exception e) {
-                    System.out.println("Palabra sola");
                 };
-
             } catch (Exception e) {
                 palabra = linea;
-                System.out.println(palabra);
             }
-            
-            NodoEntrada nuevo = new NodoEntrada(palabra, significado, raizSinonimos, raizAntonimos);
+            NodoEntrada nuevo = new NodoEntrada(palabra, referencias, significado, raizSinonimos, raizAntonimos);
             insertar(nuevo);
-            System.out.println(cantidad);
         }
     }
 
@@ -352,6 +343,160 @@ public class Diccionario<T extends Comparable> {
             }
             cantidad++;
         }
+        // si ya esta repetida que imprime o muestra
+    }
+/**
+    public String modificarEntrada(Comparable dato) {
+        String resultado = "No se encontro la palabra para modificar";
+        NodoEntrada nodoAModificar = buscar(dato);
+        if (nodoAModificar == null) {
+            return resultado;
+        } else {
+            NodoEntrada padre = buscarPadre(nodoAModificar); // busco el nodo padre del nodo entrada
+            System.out.println("Padre encontrado: "+padre.getDato());
+            NodoEntrada nuevo = new NodoEntrada ("aliens",nodoAModificar.getReferencias() ,nodoAModificar.getSignificado(),nodoAModificar.getSinonimos(),nodoAModificar.getAntonimos());
+            
+            if (padre.getLd()==nodoAModificar) { // desligo el padre de nodo a modificar
+                padre.setLd(nuevo);
+            }else{
+                padre.setLi(nuevo);
+            }
+            nuevo.setLd(nodoAModificar.getLd());
+            nuevo.setLi(nodoAModificar.getLi());
+            insertarTodoArbol();
+            resultado = "Palabra modificada correctamente";
+        }
+        return resultado;
     }
 
+    public void insertarTodoArbol() {
+        Stack<NodoEntrada> migas = new Stack<>();
+        NodoEntrada recorrido = root;
+        migas.add(recorrido);
+        recorrido = (NodoEntrada)recorrido.getLi();
+        while (!migas.isEmpty() || recorrido != null) {
+            if (recorrido != null) {
+                migas.add(recorrido);
+                recorrido = (NodoEntrada)recorrido.getLi();
+            } else {
+                recorrido = migas.pop();
+                //Ingresar cada Entrada del arbol
+                insertarEntrada(recorrido);
+                recorrido = (NodoEntrada)recorrido.getLd();
+            }
+        }
+    }
+ **/   
+    public void imprimirInOrden(NodoEntrada raiz) {
+        Stack<NodoEntrada> migas = new Stack<>();
+        migas.add(raiz);
+        raiz = (NodoEntrada)raiz.getLi();
+        while (!migas.isEmpty() || raiz != null) {
+            if (raiz != null) {
+                migas.add(raiz);
+                raiz = (NodoEntrada)raiz.getLi();
+            } else {
+                raiz = migas.pop();
+                System.out.print(raiz.getDato()+" ");
+                raiz = (NodoEntrada)raiz.getLd();
+            }
+        }
+    }
+
+    public String obtenerResultadosArbolesAVL(NodoAVL root) {
+        String resultadosSinAnt = "";
+        if (root == null) {
+            return resultadosSinAnt;
+        } else {
+            NodoBinarioGenerico recorrido = (NodoBinarioGenerico) root;
+            Stack<NodoBinarioGenerico> migas = new Stack<>();
+            migas.add(recorrido);
+            recorrido = recorrido.getLi();
+            boolean primero = true;
+            while (!migas.isEmpty() || recorrido != null) {
+                if (recorrido != null) {
+                    migas.add(recorrido);
+                    recorrido = recorrido.getLi();
+                } else {
+                    recorrido = migas.pop();
+                    if (primero) {
+                        resultadosSinAnt += recorrido.getDato();
+                        primero = false;
+                    } else {
+                        resultadosSinAnt += "," + recorrido.getDato();
+                    }
+                    recorrido = recorrido.getLd();
+                }
+            }
+            return resultadosSinAnt;
+        }
+
+    }
+
+    public void exportar() throws FileNotFoundException, IOException {
+        BufferedWriter out = new BufferedWriter(new FileWriter("Exportar.dic"));
+        PrintWriter ingresarLinea = new PrintWriter(out);
+        String linea;
+        Stack<NodoBinarioGenerico> migas = new Stack<>();
+        NodoBinarioGenerico recorrido = (NodoBinarioGenerico) root;
+        migas.add(recorrido);
+        recorrido = recorrido.getLi();
+        while (!migas.isEmpty() || recorrido != null) {
+            if (recorrido != null) {
+                migas.add(recorrido);
+                recorrido = recorrido.getLi();
+            } else {
+                recorrido = migas.pop();
+                NodoEntrada nodoEvaluado = (NodoEntrada) recorrido;
+                if (nodoEvaluado.getReferencias() == "") {
+                    linea = (String) nodoEvaluado.getDato();
+                    ingresarLinea.println(linea);
+                } else if (nodoEvaluado.getSignificado() == "") {
+                    linea = (String) nodoEvaluado.getDato() + "/" + (String) nodoEvaluado.getReferencias();
+                    ingresarLinea.println(linea);
+                } else {
+                    String sin = obtenerResultadosArbolesAVL(nodoEvaluado.getSinonimos());
+                    String ant = obtenerResultadosArbolesAVL(nodoEvaluado.getAntonimos());
+                    linea = (String) nodoEvaluado.getDato() + " " + nodoEvaluado.getReferencias() + "\"" + nodoEvaluado.getSignificado() + "\":\"" + sin + "\":\"" + ant + "\"";
+                    ingresarLinea.println(linea);
+                }
+                recorrido = recorrido.getLd();
+            }
+        }
+        out.close();
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public NodoEntrada buscarPadre(NodoEntrada hijo) {
+        NodoEntrada recorrido = root;
+        if (buscar(hijo.getDato()) == null) {
+            return null;
+        } else {
+            Stack<NodoEntrada> ancestros = new Stack<>();
+            while (recorrido != null) {
+                if (recorrido.getDato().compareTo(hijo.getDato()) == 0) {
+                    NodoEntrada padre = ancestros.pop();
+                    return padre;
+                } else if (recorrido.getDato().compareTo(hijo.getDato()) < 0) {
+                    if (recorrido.getLd() != null) {
+                        ancestros.push(recorrido);
+                        recorrido = (NodoEntrada) recorrido.getLd();
+                    } else {
+                        return null;
+                    }
+                } else {
+                    if (recorrido.getLi() != null) {
+                        ancestros.push(recorrido);
+                        recorrido = (NodoEntrada) recorrido.getLi();
+                    } else {
+                        return null;
+                    }
+                }
+            }
+        }
+        return recorrido;
+    }
 }

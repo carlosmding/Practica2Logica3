@@ -42,6 +42,7 @@ public class NodoBinarioGenerico<T> {
     public T getDato() {
         return dato;
     }
+    
 
     public NodoBinarioGenerico<T> getLi() {
         return li;

@@ -1,0 +1,10 @@
+auto/DDD:"Es el medio de transporte de eleccion":"automovil,carro":"tren"
+automovil/SSD:"Es el medio de transporte de eleccion":"auto,carro":"camion"
+avion
+barco/SG:"Puede ser un significado un poco más largo con , : ó otras cosas":"antonimo1":"sinonimo1"
+bicicleta/DS
+camion/SAFD
+carro/SSSS:"Es el medio de transporte de eleccion":"auto,automovil":"avion"
+cualquier cosa/DSSD:"Cualquier cosa otra vez":"":""
+helicoptero/DEF
+tren
