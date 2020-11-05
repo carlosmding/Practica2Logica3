@@ -22,16 +22,16 @@ public class DicVista {
         System.out.print("Diccionario: ");
         nuevo.imprimirInOrden(nuevo.getRoot());
         
-        /*NodoEntrada nodoAInsertar = new NodoEntrada("cualquier cosa","DSSD:","Cualquier cosa otra vez",null,null);
-        nuevo.insertarEntrada(nodoAInsertar);*/
-
         nuevo.exportar();
         System.out.println("");
         System.out.println("Hay "+nuevo.getCantidad()+" palabras");
+
+        nuevo.modificarEntrada("carro", "jet");
         
-        /*System.out.println("Raiz: "+nuevo.getRoot().getDato());
+        System.out.println("Raiz: "+nuevo.getRoot().getDato());
         System.out.print("Diccionario: ");
-        nuevo.imprimirInOrden(nuevo.getRoot());*/
+        nuevo.imprimirInOrden(nuevo.getRoot());
         
+
     }
 }

@@ -48,7 +48,7 @@ public class Diccionario<T extends Comparable> {
         }
         NodoEntrada nodoRecorrido = root; // Registro que uso para buscar
         NodoEntrada padreNodoRecorridoX = null;
-        NodoEntrada pivote = root; // Nodo que se puede desvalancear
+        NodoEntrada pivote = root; // Nodo que se puede desbalancear
         NodoEntrada padrePivote = null;
         NodoEntrada nodoRecorridoParaFB;
         NodoEntrada q;
@@ -345,33 +345,27 @@ public class Diccionario<T extends Comparable> {
         }
         // si ya esta repetida que imprime o muestra
     }
-/**
-    public String modificarEntrada(Comparable dato) {
+
+    public String modificarEntrada(Comparable dato, Comparable nuevoDato) {
         String resultado = "No se encontro la palabra para modificar";
         NodoEntrada nodoAModificar = buscar(dato);
         if (nodoAModificar == null) {
             return resultado;
         } else {
-            NodoEntrada padre = buscarPadre(nodoAModificar); // busco el nodo padre del nodo entrada
-            System.out.println("Padre encontrado: "+padre.getDato());
-            NodoEntrada nuevo = new NodoEntrada ("aliens",nodoAModificar.getReferencias() ,nodoAModificar.getSignificado(),nodoAModificar.getSinonimos(),nodoAModificar.getAntonimos());
-            
-            if (padre.getLd()==nodoAModificar) { // desligo el padre de nodo a modificar
-                padre.setLd(nuevo);
-            }else{
-                padre.setLi(nuevo);
-            }
-            nuevo.setLd(nodoAModificar.getLd());
-            nuevo.setLi(nodoAModificar.getLi());
-            insertarTodoArbol();
+            NodoEntrada nuevoNodo = new NodoEntrada(nuevoDato,nodoAModificar.getReferencias(),nodoAModificar.getSignificado(),nodoAModificar.getSinonimos(),nodoAModificar.getAntonimos());
+            NodoEntrada raizListaNodos = crearLista(nodoAModificar); // creo una lista ligada con todos los nodos excepto el nodo a modificar
+            insertarLista(raizListaNodos);
+            insertarEntrada(nuevoNodo);
             resultado = "Palabra modificada correctamente";
         }
         return resultado;
     }
-
-    public void insertarTodoArbol() {
+       
+    public NodoEntrada crearLista(NodoEntrada busqueda) {
         Stack<NodoEntrada> migas = new Stack<>();
         NodoEntrada recorrido = root;
+        NodoEntrada cabezaLista = new NodoEntrada("");
+        NodoEntrada ultimoLista = cabezaLista;
         migas.add(recorrido);
         recorrido = (NodoEntrada)recorrido.getLi();
         while (!migas.isEmpty() || recorrido != null) {
@@ -380,13 +374,26 @@ public class Diccionario<T extends Comparable> {
                 recorrido = (NodoEntrada)recorrido.getLi();
             } else {
                 recorrido = migas.pop();
-                //Ingresar cada Entrada del arbol
-                insertarEntrada(recorrido);
+                if(recorrido!=busqueda){
+                    NodoEntrada nuevoNodo = new NodoEntrada(recorrido.getDato(),recorrido.getReferencias(),recorrido.getSignificado(),recorrido.getSinonimos(),recorrido.getAntonimos());
+                    ultimoLista.setLd(nuevoNodo);
+                    ultimoLista = (NodoEntrada)ultimoLista.getLd();
+                }
                 recorrido = (NodoEntrada)recorrido.getLd();
             }
         }
+        return cabezaLista;
     }
- **/   
+    
+    public void insertarLista(NodoEntrada raiz) {
+        root = null;
+        NodoEntrada nodoAIngresar = (NodoEntrada)raiz.getLd();
+        while(nodoAIngresar != null){
+            insertarEntrada(nodoAIngresar);
+            nodoAIngresar = (NodoEntrada)nodoAIngresar.getLd();
+        }
+    }
+    
     public void imprimirInOrden(NodoEntrada raiz) {
         Stack<NodoEntrada> migas = new Stack<>();
         migas.add(raiz);
