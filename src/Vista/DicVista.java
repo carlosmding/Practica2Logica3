@@ -27,17 +27,9 @@ public class DicVista {
         System.out.println("Hay "+nuevo.getCantidad()+" palabras");
 
         nuevo.modificarEntrada("carro", "jet");
-        NodoEntrada nodoAInsertar = new NodoEntrada("ab");
-        nuevo.insertarEntrada(nodoAInsertar);
         
-        NodoEntrada nodoAInsertar2 = new NodoEntrada("abcs");
-        nuevo.insertarEntrada(nodoAInsertar2);
-        
-        NodoEntrada nodoAInsertar3 = new NodoEntrada("abc");
-        nuevo.insertarEntrada(nodoAInsertar3);
-        
-        NodoEntrada nodoAInsertar4 = new NodoEntrada("abcd2");
-        nuevo.insertarEntrada(nodoAInsertar4);
+        String datos = "camiones/SSSS:\"Es el medio de transporte de eleccion\":\"carrotanques,automovil\":\"aviones\"";
+        System.out.println(nuevo.ingresarNuevaPalabra("camiones", datos));
         
         System.out.println("Raiz: "+nuevo.getRoot().getDato());
         System.out.print("Diccionario: ");

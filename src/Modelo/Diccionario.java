@@ -39,7 +39,6 @@ public class Diccionario<T extends Comparable> {
     public Diccionario() {
     }
 
-
     public NodoEntrada insertarEntrada(NodoEntrada nodoAInsertar) {
         System.out.println("Palabra de la entrada: " + nodoAInsertar.getDato());
         if (root == null) {
@@ -352,7 +351,7 @@ public class Diccionario<T extends Comparable> {
         if (nodoAModificar == null) {
             return resultado;
         } else {
-            NodoEntrada nuevoNodo = new NodoEntrada(nuevoDato,nodoAModificar.getReferencias(),nodoAModificar.getSignificado(),nodoAModificar.getSinonimos(),nodoAModificar.getAntonimos());
+            NodoEntrada nuevoNodo = new NodoEntrada(nuevoDato, nodoAModificar.getReferencias(), nodoAModificar.getSignificado(), nodoAModificar.getSinonimos(), nodoAModificar.getAntonimos());
             NodoEntrada raizListaNodos = crearLista(nodoAModificar); // creo una lista ligada con todos los nodos excepto el nodo a modificar
             insertarLista(raizListaNodos);
             insertarEntrada(nuevoNodo);
@@ -360,54 +359,56 @@ public class Diccionario<T extends Comparable> {
         }
         return resultado;
     }
-       
+
     public NodoEntrada crearLista(NodoEntrada busqueda) {
         Stack<NodoEntrada> migas = new Stack<>();
         NodoEntrada recorrido = root;
         NodoEntrada cabezaLista = new NodoEntrada("");
         NodoEntrada ultimoLista = cabezaLista;
         migas.add(recorrido);
-        recorrido = (NodoEntrada)recorrido.getLi();
+        recorrido = (NodoEntrada) recorrido.getLi();
         while (!migas.isEmpty() || recorrido != null) {
             if (recorrido != null) {
                 migas.add(recorrido);
-                recorrido = (NodoEntrada)recorrido.getLi();
+                recorrido = (NodoEntrada) recorrido.getLi();
             } else {
                 recorrido = migas.pop();
-                if(recorrido!=busqueda){
-                    NodoEntrada nuevoNodo = new NodoEntrada(recorrido.getDato(),recorrido.getReferencias(),recorrido.getSignificado(),recorrido.getSinonimos(),recorrido.getAntonimos());
+                if (recorrido != busqueda) {
+                    NodoEntrada nuevoNodo = new NodoEntrada(recorrido.getDato(), recorrido.getReferencias(), recorrido.getSignificado(), recorrido.getSinonimos(), recorrido.getAntonimos());
                     ultimoLista.setLd(nuevoNodo);
-                    ultimoLista = (NodoEntrada)ultimoLista.getLd();
+                    ultimoLista = (NodoEntrada) ultimoLista.getLd();
                 }
-                recorrido = (NodoEntrada)recorrido.getLd();
+                recorrido = (NodoEntrada) recorrido.getLd();
             }
         }
         return cabezaLista;
     }
-    
+
     public void insertarLista(NodoEntrada raiz) {
         root = null;
-        NodoEntrada nodoAIngresar = (NodoEntrada)raiz.getLd();
-        while(nodoAIngresar != null){
+        NodoEntrada nodoAIngresar = (NodoEntrada) raiz.getLd();
+        while (nodoAIngresar != null) {
             insertarEntrada(nodoAIngresar);
-            nodoAIngresar = (NodoEntrada)nodoAIngresar.getLd();
+            nodoAIngresar = (NodoEntrada) nodoAIngresar.getLd();
         }
     }
-    
-    public void imprimirInOrden(NodoEntrada raiz) {
+
+    public String imprimirInOrden(NodoEntrada raiz) {
+        String cadena="";
         Stack<NodoEntrada> migas = new Stack<>();
         migas.add(raiz);
-        raiz = (NodoEntrada)raiz.getLi();
+        raiz = (NodoEntrada) raiz.getLi();
         while (!migas.isEmpty() || raiz != null) {
             if (raiz != null) {
                 migas.add(raiz);
-                raiz = (NodoEntrada)raiz.getLi();
+                raiz = (NodoEntrada) raiz.getLi();
             } else {
                 raiz = migas.pop();
-                System.out.print(raiz.getDato()+" ");
-                raiz = (NodoEntrada)raiz.getLd();
+                cadena+=(raiz.getDato() + " ");
+                raiz = (NodoEntrada) raiz.getLd();
             }
         }
+        return cadena;
     }
 
     public String obtenerResultadosArbolesAVL(NodoAVL root) {
@@ -505,5 +506,95 @@ public class Diccionario<T extends Comparable> {
             }
         }
         return recorrido;
+    }
+
+    public String ingresarNuevaPalabra(Comparable dato, String datos) {
+        String resultado = "Palabra ya ingresada";
+        if (buscar(dato) == null) {
+            String palabra, otros, referencias = "", significado = "", sinonimos = "", antonimos = "";
+            palabra = (datos.split("\\/"))[0];
+            otros = (datos.split("\\/"))[1];
+            referencias = (otros.split("\""))[0];
+            significado = (otros.split("\""))[1];
+            sinonimos = (otros.split("\""))[3];
+            antonimos = (otros.split("\""))[5];
+
+            //arreglo de sinonimos
+            NodoAVL raizSinonimos = new NodoAVL(null);
+            NodoAVL raizAntonimos = new NodoAVL(null);
+            
+            String sin[] = sinonimos.split("\\,");
+            ArbolAVL arbolSinonimos = new ArbolAVL();
+            for (int i = 0; i < sin.length; i++) {
+                arbolSinonimos.insertarDato(sin[i]);
+                if (buscar(sin[i]) == null) {
+                    NodoEntrada nuevoNodo = new NodoEntrada(sin[i]);
+                    nuevoNodo.setSignificado(significado);
+                    NodoAVL rootsinonimos;
+                    ArbolAVL arbolitosin = new ArbolAVL();
+                    arbolitosin.insertarDato(palabra);
+                    rootsinonimos = arbolitosin.getRoot();
+                    nuevoNodo.setSinonimos(rootsinonimos);
+                    insertarEntrada(nuevoNodo);
+                } else {
+                    NodoAVL raizsin = (buscar(sin[i])).getSinonimos();
+                    if (raizsin != null) {
+                        NodoAVL nodoEncontrado = existeNodoAVL(raizsin, palabra);
+                        if (nodoEncontrado == null) {
+                            NodoAVL raiznueva;
+                            String listadosinonimos = obtenerResultadosArbolesAVL(raizsin);
+                            listadosinonimos += "," + palabra;
+                            String listado[] = listadosinonimos.split("\\,");
+                            ArbolAVL arbolSin = new ArbolAVL();
+                            for (int j = 0; j < listado.length; j++) {
+                                arbolSin.insertarDato(listado[j]);
+                                //pendiente quitar los espacios    
+                            }
+                            raiznueva = arbolSin.getRoot();
+                            buscar(sin[i]).setSinonimos(raiznueva);
+                        }
+                    }
+                }
+                //pendiente quitar los espacios   
+            }
+            raizSinonimos = arbolSinonimos.getRoot();
+
+            //arreglo de antonimos
+            String ant[] = antonimos.split("\\,");
+            ArbolAVL arbolAntonimos = new ArbolAVL();
+            for (int i = 0; i < ant.length; i++) {
+                arbolAntonimos.insertarDato(ant[i]);
+                if (buscar(ant[i]) == null) {
+                    NodoEntrada nuevoNodo = new NodoEntrada(ant[i]);
+                    insertarEntrada(nuevoNodo);
+                }
+                //pendiente quitar los espacios  
+            }
+            raizAntonimos = arbolAntonimos.getRoot();
+            
+            NodoEntrada nuevaEntrada = new NodoEntrada (palabra,referencias,significado,raizSinonimos,raizAntonimos);
+            insertarEntrada(nuevaEntrada);
+            resultado = "Palabra ingresada correctamente";
+        }
+        return resultado;
+    }
+
+    public NodoAVL existeNodoAVL(NodoAVL raiz, Comparable dato) {
+        Stack<NodoAVL> migas = new Stack<>();
+        migas.add(raiz);
+        raiz = (NodoAVL) raiz.getLi();
+        while (!migas.isEmpty() || raiz != null) {
+            if (raiz != null) {
+                migas.add(raiz);
+                raiz = (NodoAVL) raiz.getLi();
+            } else {
+                raiz = migas.pop();
+                if (raiz.getDato() == dato) {
+                    return raiz;
+                }
+                raiz = (NodoAVL) raiz.getLd();
+            }
+        }
+        return null;
     }
 }
