@@ -60,6 +60,7 @@ public class DiccionarioVista extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         imprimir = new javax.swing.JLabel();
         DibujaArbol = new javax.swing.JButton();
+        raiz = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         antonimos = new javax.swing.JTextField();
@@ -82,7 +83,7 @@ public class DiccionarioVista extends javax.swing.JFrame {
         jPanel10 = new javax.swing.JPanel();
         IngresarPalabra = new javax.swing.JButton();
         jLabel27 = new javax.swing.JLabel();
-        palabra1 = new javax.swing.JTextField();
+        palabracambiar = new javax.swing.JTextField();
         ExportarArchivo = new javax.swing.JButton();
         CargarArchivo = new javax.swing.JButton();
         ModificarPalabra = new javax.swing.JButton();
@@ -280,6 +281,8 @@ public class DiccionarioVista extends javax.swing.JFrame {
             }
         });
 
+        raiz.setText("Raiz");
+
         javax.swing.GroupLayout pantallaLayout = new javax.swing.GroupLayout(pantalla);
         pantalla.setLayout(pantallaLayout);
         pantallaLayout.setHorizontalGroup(
@@ -287,16 +290,22 @@ public class DiccionarioVista extends javax.swing.JFrame {
             .addGroup(pantallaLayout.createSequentialGroup()
                 .addGroup(pantallaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pantallaLayout.createSequentialGroup()
-                        .addGap(316, 316, 316)
-                        .addComponent(jLabel4))
-                    .addGroup(pantallaLayout.createSequentialGroup()
-                        .addGap(106, 106, 106)
-                        .addComponent(imprimir)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pantallaLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(DibujaArbol)
+                        .addGroup(pantallaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pantallaLayout.createSequentialGroup()
+                                .addGap(316, 316, 316)
+                                .addComponent(jLabel4))
+                            .addGroup(pantallaLayout.createSequentialGroup()
+                                .addGap(106, 106, 106)
+                                .addComponent(imprimir)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pantallaLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(DibujaArbol)))
                 .addContainerGap())
+            .addGroup(pantallaLayout.createSequentialGroup()
+                .addGap(54, 54, 54)
+                .addComponent(raiz)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pantallaLayout.setVerticalGroup(
             pantallaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -305,7 +314,9 @@ public class DiccionarioVista extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addGap(19, 19, 19)
                 .addComponent(imprimir)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 269, Short.MAX_VALUE)
+                .addGap(28, 28, 28)
+                .addComponent(raiz)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 227, Short.MAX_VALUE)
                 .addComponent(DibujaArbol)
                 .addContainerGap())
         );
@@ -463,22 +474,20 @@ public class DiccionarioVista extends javax.swing.JFrame {
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel5Layout.createSequentialGroup()
-                                        .addComponent(jLabel19)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(palabra, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel5Layout.createSequentialGroup()
-                                        .addComponent(jLabel21)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(significado, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jLabel23)
+                                        .addGap(10, 10, 10)
+                                        .addComponent(antonimos, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel5Layout.createSequentialGroup()
                                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel23, javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jLabel22, javax.swing.GroupLayout.Alignment.TRAILING))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(jLabel21)
+                                            .addComponent(jLabel19)
+                                            .addComponent(jLabel22))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(sinonimos)
-                                            .addComponent(antonimos, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(sinonimos, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
+                                            .addComponent(palabra, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(significado))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(30, 30, 30))
                             .addGroup(jPanel5Layout.createSequentialGroup()
@@ -490,10 +499,10 @@ public class DiccionarioVista extends javax.swing.JFrame {
                                     .addGroup(jPanel5Layout.createSequentialGroup()
                                         .addComponent(jLabel27)
                                         .addGap(18, 18, 18)
-                                        .addComponent(palabra1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(palabracambiar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(34, 34, 34)
                                         .addComponent(ModificarPalabra)))
-                                .addGap(0, 8, Short.MAX_VALUE)))))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -538,7 +547,7 @@ public class DiccionarioVista extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel27)
-                    .addComponent(palabra1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(palabracambiar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ModificarPalabra))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -562,6 +571,10 @@ public class DiccionarioVista extends javax.swing.JFrame {
         jLabel16.setText("Antonimos:");
 
         sigencontrado.setBorder(null);
+
+        sinencontrado.setBorder(null);
+
+        antencontrado.setBorder(null);
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -653,7 +666,7 @@ public class DiccionarioVista extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 17, Short.MAX_VALUE))
+                .addGap(0, 22, Short.MAX_VALUE))
         );
 
         pack();
@@ -670,7 +683,7 @@ public class DiccionarioVista extends javax.swing.JFrame {
         String dato = busquedapalabra.getText();
         if ("".equals(dato)) {
             JOptionPane.showMessageDialog(null, "Ingrese una palabra para realizar la busqueda");
-        }else{
+        } else {
             if (palabraenbusqueda == null) {
                 resultadopalabra.setText("Palabra no encontrada");
             } else {
@@ -685,17 +698,23 @@ public class DiccionarioVista extends javax.swing.JFrame {
     private void IngresarPalabraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IngresarPalabraActionPerformed
         // TODO add your handling code here:
         String cadena = "";
-        try {
-            cadena = palabra.getText() + "/DSSA:\"" + significado.getText() + "\":\"" + sinonimos.getText() + "\":\"" + antonimos.getText() + "\"";
-            diccionario.ingresarNuevaPalabra(palabra.getText(), cadena);
-            JOptionPane.showMessageDialog(null, "Palabra ingresada correctamente");
-            palabra.setText("");
-            significado.setText("");
-            sinonimos.setText("");
-            antonimos.setText("");
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error al ingresar datos, verifique que todos los campos esten completos");
+        System.out.println(diccionario.buscar(palabra.getText()));
+        if (diccionario.buscar(palabra.getText()) != null) {
+            JOptionPane.showMessageDialog(null, "La palabra ya existe en el diccionario, no puede ser creada");
+        } else {
+            try {
+                cadena = palabra.getText() + "/DSSA:\"" + significado.getText() + "\":\"" + sinonimos.getText() + "\":\"" + antonimos.getText() + "\"";
+                diccionario.ingresarNuevaPalabra(palabra.getText(), cadena);
+                JOptionPane.showMessageDialog(null, "Palabra ingresada correctamente");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Error al ingresar datos, verifique que todos los campos esten completos");
+            }
         }
+        palabra.setText("");
+        significado.setText("");
+        sinonimos.setText("");
+        antonimos.setText("");
+
     }//GEN-LAST:event_IngresarPalabraActionPerformed
 
     private void CargarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CargarArchivoActionPerformed
@@ -711,6 +730,8 @@ public class DiccionarioVista extends javax.swing.JFrame {
     private void DibujaArbolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DibujaArbolActionPerformed
         // TODO add your handling code here:
         imprimir.setText(diccionario.imprimirInOrden(diccionario.getRoot()));
+        raiz.setText((String)diccionario.getRoot().getDato());
+        
     }//GEN-LAST:event_DibujaArbolActionPerformed
 
     private void consultardatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultardatosActionPerformed
@@ -724,18 +745,34 @@ public class DiccionarioVista extends javax.swing.JFrame {
                     break;
                 case 1:
                     String sin = diccionario.obtenerResultadosArbolesAVL(palabra.getSinonimos());
-                    sinencontrado.setText(sin);
+                    if (sin == null) {
+                        sinencontrado.setText("Sin registros");
+                    } else {
+                        sinencontrado.setText(sin);
+                    }
                     break;
                 case 2:
                     String ant = diccionario.obtenerResultadosArbolesAVL(palabra.getAntonimos());
-                    antencontrado.setText(ant);
+                    if (ant == null) {
+                        antencontrado.setText("Sin registros");
+                    } else {
+                        antencontrado.setText(ant);
+                    }
                     break;
                 case 3:
                     sigencontrado.setText(palabra.getSignificado());
                     String sins = diccionario.obtenerResultadosArbolesAVL(palabra.getSinonimos());
-                    sinencontrado.setText(sins);
+                    if (sins == null) {
+                        sinencontrado.setText("Sin registros");
+                    } else {
+                        sinencontrado.setText(sins);
+                    }
                     String ants = diccionario.obtenerResultadosArbolesAVL(palabra.getAntonimos());
-                    antencontrado.setText(ants);
+                    if (ants == null) {
+                        antencontrado.setText("Sin registros");
+                    } else {
+                        antencontrado.setText(ants);
+                    }
                     break;
             }
         } catch (Exception e) {
@@ -753,6 +790,7 @@ public class DiccionarioVista extends javax.swing.JFrame {
         try {
             // TODO add your handling code here:
             diccionario.exportar();
+            JOptionPane.showMessageDialog(null, "Archivo exportado, correctamente ( .../exportar.dic)");
         } catch (IOException ex) {
             Logger.getLogger(DiccionarioVista.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -760,6 +798,16 @@ public class DiccionarioVista extends javax.swing.JFrame {
 
     private void ModificarPalabraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarPalabraActionPerformed
         // TODO add your handling code here:
+        String palabra = palabracambiar.getText().trim();
+        if (diccionario.buscar(palabra) == null) {
+            JOptionPane.showMessageDialog(null, "No se puede modificar, palabra no existe en el diccionario");
+            palabracambiar.setText("");
+        } else {
+            String palabraNueva = JOptionPane.showInputDialog("Ingrese la nueva palabra: ");
+            JOptionPane.showMessageDialog(null, diccionario.modificarEntrada(palabra, palabraNueva));
+            palabracambiar.setText("");
+        }
+
     }//GEN-LAST:event_ModificarPalabraActionPerformed
 
     /**
@@ -849,8 +897,9 @@ public class DiccionarioVista extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JTextField palabra;
-    private javax.swing.JTextField palabra1;
+    private javax.swing.JTextField palabracambiar;
     private javax.swing.JPanel pantalla;
+    private javax.swing.JLabel raiz;
     private javax.swing.JLabel resultadopalabra;
     private javax.swing.JTextField sigencontrado;
     private javax.swing.JTextField significado;

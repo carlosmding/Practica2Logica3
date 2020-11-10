@@ -360,6 +360,7 @@ public class Diccionario<T extends Comparable> {
         return resultado;
     }
 
+
     public NodoEntrada crearLista(NodoEntrada busqueda) {
         Stack<NodoEntrada> migas = new Stack<>();
         NodoEntrada recorrido = root;
@@ -394,7 +395,7 @@ public class Diccionario<T extends Comparable> {
     }
 
     public String imprimirInOrden(NodoEntrada raiz) {
-        String cadena="";
+        String cadena = "";
         Stack<NodoEntrada> migas = new Stack<>();
         migas.add(raiz);
         raiz = (NodoEntrada) raiz.getLi();
@@ -404,7 +405,7 @@ public class Diccionario<T extends Comparable> {
                 raiz = (NodoEntrada) raiz.getLi();
             } else {
                 raiz = migas.pop();
-                cadena+=(raiz.getDato() + " ");
+                cadena += (raiz.getDato() + " ");
                 raiz = (NodoEntrada) raiz.getLd();
             }
         }
@@ -465,7 +466,7 @@ public class Diccionario<T extends Comparable> {
                 } else {
                     String sin = obtenerResultadosArbolesAVL(nodoEvaluado.getSinonimos());
                     String ant = obtenerResultadosArbolesAVL(nodoEvaluado.getAntonimos());
-                    linea = (String) nodoEvaluado.getDato() + " " + nodoEvaluado.getReferencias() + "\"" + nodoEvaluado.getSignificado() + "\":\"" + sin + "\":\"" + ant + "\"";
+                    linea = (String) nodoEvaluado.getDato() + "/" + nodoEvaluado.getReferencias() + "\"" + nodoEvaluado.getSignificado() + "\":\"" + sin + "\":\"" + ant + "\"";
                     ingresarLinea.println(linea);
                 }
                 recorrido = recorrido.getLd();
@@ -522,7 +523,7 @@ public class Diccionario<T extends Comparable> {
             //arreglo de sinonimos
             NodoAVL raizSinonimos = new NodoAVL(null);
             NodoAVL raizAntonimos = new NodoAVL(null);
-            
+
             String sin[] = sinonimos.split("\\,");
             ArbolAVL arbolSinonimos = new ArbolAVL();
             for (int i = 0; i < sin.length; i++) {
@@ -571,8 +572,8 @@ public class Diccionario<T extends Comparable> {
                 //pendiente quitar los espacios  
             }
             raizAntonimos = arbolAntonimos.getRoot();
-            
-            NodoEntrada nuevaEntrada = new NodoEntrada (palabra,referencias,significado,raizSinonimos,raizAntonimos);
+
+            NodoEntrada nuevaEntrada = new NodoEntrada(palabra, referencias, significado, raizSinonimos, raizAntonimos);
             insertarEntrada(nuevaEntrada);
             resultado = "Palabra ingresada correctamente";
         }
