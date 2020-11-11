@@ -42,7 +42,6 @@ public class NodoBinarioGenerico<T> {
     public T getDato() {
         return dato;
     }
-    
 
     public NodoBinarioGenerico<T> getLi() {
         return li;
@@ -71,7 +70,7 @@ public class NodoBinarioGenerico<T> {
      */
     public int recalcularAncho() {
         System.out.println("recalcular ancho");
-        ancho = 1;
+        ancho = 2;
         if (this.getLi() != null) {
             ancho = ancho + this.getLi().recalcularAncho();
         }
@@ -84,6 +83,18 @@ public class NodoBinarioGenerico<T> {
     @Override
     public String toString() {
         return dato.toString();
+    }
+
+    public int nodosCompletos(NodoBinarioGenerico<T> n) {
+        if (n == null) {
+            return 0;
+        } else {
+            if (n.li != null && n.ld != null) {
+                return nodosCompletos(n.li) + nodosCompletos(n.ld) + 1;
+            }
+            return nodosCompletos(n.li) + nodosCompletos(n.ld);
+        }
+
     }
 
 }

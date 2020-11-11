@@ -28,6 +28,11 @@ public class NodoEntrada<T extends Comparable> extends NodoAVL {
         super(dato);
     }
     
+    public NodoEntrada(Comparable dato,String ref){
+        super(dato);
+        this.referencias = ref;
+    }
+    
    
     public String getSignificado() {
         return significado;
