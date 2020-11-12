@@ -13,6 +13,7 @@ import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComboBox;
 import javax.swing.JInternalFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
@@ -471,14 +472,15 @@ public class DiccionarioVista extends javax.swing.JFrame {
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel5Layout.createSequentialGroup()
-                                        .addComponent(jLabel27)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(palabracambiar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(ModificarPalabra)))
-                                .addGap(0, 0, Short.MAX_VALUE))))
+                                    .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(jLabel27)
+                                .addGap(18, 18, 18)
+                                .addComponent(palabracambiar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(26, 26, 26)
+                                .addComponent(ModificarPalabra)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -828,16 +830,43 @@ public class DiccionarioVista extends javax.swing.JFrame {
 
     private void ModificarPalabraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarPalabraActionPerformed
         // TODO add your handling code here:
+                
         String palabra = palabracambiar.getText().trim();
+        String[] atributosPalabra = {"Palabra", "Significado", "Sinonimos", "Antonimos"};
+        JComboBox modificarAtributo = new JComboBox(atributosPalabra);
+        
         if (diccionario.buscar(palabra) == null) {
             JOptionPane.showMessageDialog(null, "No se puede modificar, palabra no existe en el diccionario");
             palabracambiar.setText("");
         } else {
-            String palabraNueva = JOptionPane.showInputDialog("Ingrese la nueva palabra: ");
-            JOptionPane.showMessageDialog(null, diccionario.modificarEntrada(palabra, palabraNueva));
-            palabracambiar.setText("");
-        }
+            
+            JOptionPane.showMessageDialog(null, modificarAtributo, "Elige el campo a modificar de la palabra "+palabra, 1, null);
+            String opcion = (String)modificarAtributo.getSelectedItem();
+            switch(opcion){
+                case "Palabra":
+                    String palabraNueva = JOptionPane.showInputDialog("Ingrese la nueva palabra: ");
+                    JOptionPane.showMessageDialog(null, diccionario.modificarEntrada(palabra, palabraNueva));
+                    palabracambiar.setText("");
+                break;
+                case "Significado":
+                    String significadoNuevo = JOptionPane.showInputDialog("Ingrese el nuevo significado: ");
+                    JOptionPane.showMessageDialog(null, diccionario.modificarSignificado(palabra, significadoNuevo));
+                    palabracambiar.setText("");
+                break;
+                case "Sinonimos":
+                    String sinonimoNuevo = JOptionPane.showInputDialog("Ingrese los nuevos sinonimos: ");
+                    JOptionPane.showMessageDialog(null, diccionario.modificarSinonimos(palabra, sinonimoNuevo));
+                    palabracambiar.setText("");
+                break;
+                case "Antonimos":
+                    String antonimoNuevo = JOptionPane.showInputDialog("Ingrese los nuevos antonimos: ");
+                    JOptionPane.showMessageDialog(null, diccionario.modificarAntonimos(palabra, antonimoNuevo));
+                    palabracambiar.setText("");
+                break;
 
+            }
+        }
+    
     }//GEN-LAST:event_ModificarPalabraActionPerformed
 
     private void dibujarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dibujarActionPerformed

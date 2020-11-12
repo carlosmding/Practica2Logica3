@@ -1,24 +1,5 @@
 /*
- * Copyright 2019 Carlos Alejandro Escobar Marulanda ealejandro101@gmail.com
- * Permission is hereby granted, free of charge, to any person 
- * obtaining a copy of this software and associated documentation 
- * files (the "Software"), to deal in the Software without 
- * restriction, including without limitation the rights to use, 
- * copy, modify, merge, publish, distribute, sublicense, and/or 
- * sell copies of the Software, and to permit persons to whom the 
- * Software is furnished to do so, subject to the following 
- * conditions:
- * The above copyright notice and this permission notice shall 
- * be included in all copies or substantial portions of the 
- * Software.
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES 
- * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND 
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT 
- * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- *  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
- * OTHER DEALINGS IN THE SOFTWARE.
+ * 
  */
 package Modelo;
 
@@ -32,11 +13,11 @@ import javax.swing.JPanel;
  */
 public class Diccionario<T extends Comparable> {
 
-    private NodoEntrada root;
-    private NodoEntrada ult;
+    private NodoEntrada root, rootAux;
     private NodoEntrada x;
     private int cantidad;
-    int alt;
+    private int alt;
+    
 
     public Diccionario() {
     }
@@ -315,8 +296,7 @@ public class Diccionario<T extends Comparable> {
                             String sin[] = sinonimos.split("\\,");
                             ArbolAVL arbolSinonimos = new ArbolAVL();
                             for (int i = 0; i < sin.length; i++) {
-                                arbolSinonimos.insertarDato(sin[i].trim());
-                                //pendiente quitar los espacios y las comillas    
+                                arbolSinonimos.insertarDato(sin[i].trim());   
                             }
                             raizSinonimos = arbolSinonimos.getRoot();
 
@@ -324,8 +304,7 @@ public class Diccionario<T extends Comparable> {
                             String ant[] = antonimos.split("\\,");
                             ArbolAVL arbolAntonimos = new ArbolAVL();
                             for (int i = 0; i < ant.length; i++) {
-                                arbolAntonimos.insertarDato(ant[i].trim());
-                                //pendiente quitar los espacios y las comillas    
+                                arbolAntonimos.insertarDato(ant[i].trim());   
                             }
                             raizAntonimos = arbolAntonimos.getRoot();
                         }else{
@@ -360,21 +339,23 @@ public class Diccionario<T extends Comparable> {
             return resultado;
         } else {
             NodoEntrada nuevoNodo = new NodoEntrada(nuevoDato, nodoAModificar.getReferencias(), nodoAModificar.getSignificado(), nodoAModificar.getSinonimos(), nodoAModificar.getAntonimos());
-            NodoEntrada raizListaNodos = crearLista(nodoAModificar); // creo una lista ligada con todos los nodos excepto el nodo a modificar
-            insertarLista(raizListaNodos);
+            ingresarNuevoArbol(nodoAModificar); // creo una lista ligada con todos los nodos excepto el nodo a modificar
+            
             insertarEntrada(nuevoNodo);
             resultado = "Palabra modificada correctamente";
         }
         return resultado;
     }
 
-    public NodoEntrada crearLista(NodoEntrada busqueda) {
+    public void ingresarNuevoArbol(NodoEntrada busqueda) {
         Stack<NodoEntrada> migas = new Stack<>();
-        NodoEntrada recorrido = root;
-        NodoEntrada cabezaLista = new NodoEntrada("");
-        NodoEntrada ultimoLista = cabezaLista;
+        rootAux = root;       
+        NodoEntrada recorrido = rootAux;
+        
+        root = null;
         migas.add(recorrido);
         recorrido = (NodoEntrada) recorrido.getLi();
+        
         while (!migas.isEmpty() || recorrido != null) {
             if (recorrido != null) {
                 migas.add(recorrido);
@@ -383,22 +364,100 @@ public class Diccionario<T extends Comparable> {
                 recorrido = migas.pop();
                 if (recorrido != busqueda) {
                     NodoEntrada nuevoNodo = new NodoEntrada(recorrido.getDato(), recorrido.getReferencias(), recorrido.getSignificado(), recorrido.getSinonimos(), recorrido.getAntonimos());
-                    ultimoLista.setLd(nuevoNodo);
-                    ultimoLista = (NodoEntrada) ultimoLista.getLd();
+                    
+                    insertarEntrada(nuevoNodo);    
                 }
                 recorrido = (NodoEntrada) recorrido.getLd();
             }
         }
-        return cabezaLista;
     }
+    
+    public String modificarSignificado(Comparable dato, String nuevoSignificado) {
+        NodoEntrada nodoAModificar = buscar(dato);
+        String resultado;
 
-    public void insertarLista(NodoEntrada raiz) {
-        root = null;
-        NodoEntrada nodoAIngresar = (NodoEntrada) raiz.getLd();
-        while (nodoAIngresar != null) {
-            insertarEntrada(nodoAIngresar);
-            nodoAIngresar = (NodoEntrada) nodoAIngresar.getLd();
-        }
+        NodoEntrada nuevoNodo = new NodoEntrada(nodoAModificar.getDato(), nodoAModificar.getReferencias(), nuevoSignificado, nodoAModificar.getSinonimos(), nodoAModificar.getAntonimos());
+        ingresarNuevoArbol(nodoAModificar); // creo una lista ligada con todos los nodos excepto el nodo a modificar
+        insertarEntrada(nuevoNodo);
+        resultado = "Significado modificado correctamente";
+
+        return resultado;
+    }
+    
+    public String modificarSinonimos(Comparable dato, String nuevoSinonimo) {
+        NodoEntrada nodoAModificar = buscar(dato);        
+        NodoAVL raizSinonimos = new NodoAVL(null);
+            
+            String sin[] = nuevoSinonimo.split("\\,");
+            ArbolAVL arbolSinonimos = new ArbolAVL();
+            for (int i = 0; i < sin.length; i++) {
+                arbolSinonimos.insertarDato(sin[i].trim());
+                if (buscar(sin[i]) == null) {
+                    NodoEntrada nuevoNodo = new NodoEntrada(sin[i].trim());
+                    nuevoNodo.setSignificado(nodoAModificar.getSignificado());
+                    NodoAVL rootsinonimos;
+                    ArbolAVL arbolitosin = new ArbolAVL();
+                    arbolitosin.insertarDato(nodoAModificar.getDato());
+                    rootsinonimos = arbolitosin.getRoot();
+                    nuevoNodo.setSinonimos(rootsinonimos);
+                    insertarEntrada(nuevoNodo);
+                } else {
+                    NodoAVL raizsin = (buscar(sin[i].trim())).getSinonimos();                   
+                    NodoEntrada NodoModificado = buscar(sin[i].trim());
+
+                    if (raizsin != null) {
+                        NodoAVL nodoEncontrado = existeNodoAVL(raizsin, nodoAModificar.getDato());
+                        if (nodoEncontrado == null) {
+                            NodoAVL raiznueva;
+                            String listadosinonimos = obtenerResultadosArbolesAVL(raizsin);
+                            listadosinonimos += "," + nodoAModificar.getDato();
+                            String listado[] = listadosinonimos.split("\\,");
+                            ArbolAVL arbolSin = new ArbolAVL();
+                            for (int j = 0; j < listado.length; j++) {
+                                arbolSin.insertarDato(listado[j]);
+                                //pendiente quitar los espacios    
+                            }
+                            raiznueva = arbolSin.getRoot();
+                            buscar(sin[i].trim()).setSinonimos(raiznueva);
+                        }
+                    } else {
+                        ArbolAVL arbolSin = new ArbolAVL();
+                        arbolSin.insertarDato(dato);
+                        NodoAVL raizarbol = arbolSin.getRoot();
+                        NodoModificado.setSinonimos(raizarbol);
+                    }
+                }
+            }
+            raizSinonimos = arbolSinonimos.getRoot();
+
+        NodoEntrada nuevoNodo = new NodoEntrada(nodoAModificar.getDato(), nodoAModificar.getReferencias(), nodoAModificar.getSignificado(), raizSinonimos, nodoAModificar.getAntonimos());
+        ingresarNuevoArbol(nodoAModificar); // creo una lista ligada con todos los nodos excepto el nodo a modificar
+        insertarEntrada(nuevoNodo);
+        String resultado = "Sinonimos modificados correctamente";
+
+        return resultado;
+    }
+    
+    public String modificarAntonimos(Comparable dato, String nuevoAntonimos) {
+        String resultado = "No se encontro la palabra para modificar";
+        NodoEntrada nodoAModificar = buscar(dato);  
+        NodoAVL raizAntonimos = new NodoAVL(null);
+        String ant[] = nuevoAntonimos.split("\\,");
+            ArbolAVL arbolAntonimos = new ArbolAVL();
+            for (int i = 0; i < ant.length; i++) {
+                arbolAntonimos.insertarDato(ant[i].trim());
+                if (buscar(ant[i]) == null) {
+                    NodoEntrada nuevoNodo = new NodoEntrada(ant[i].trim());
+                    insertarEntrada(nuevoNodo);
+                }
+            }
+        raizAntonimos = arbolAntonimos.getRoot();
+        NodoEntrada nuevoNodo = new NodoEntrada(nodoAModificar.getDato(), nodoAModificar.getReferencias(), nodoAModificar.getSignificado(), nodoAModificar.getSinonimos(), raizAntonimos);
+        ingresarNuevoArbol(nodoAModificar); // creo una lista ligada con todos los nodos excepto el nodo a modificar
+        insertarEntrada(nuevoNodo);
+        resultado = "Antonimos modificados correctamente";
+        
+        return resultado;
     }
 
     public String imprimirInOrden(NodoEntrada raiz) {
@@ -486,36 +545,6 @@ public class Diccionario<T extends Comparable> {
         return cantidad;
     }
 
-    public NodoEntrada buscarPadre(NodoEntrada hijo) {
-        NodoEntrada recorrido = root;
-        if (buscar(hijo.getDato()) == null) {
-            return null;
-        } else {
-            Stack<NodoEntrada> ancestros = new Stack<>();
-            while (recorrido != null) {
-                if (recorrido.getDato().compareTo(hijo.getDato()) == 0) {
-                    NodoEntrada padre = ancestros.pop();
-                    return padre;
-                } else if (recorrido.getDato().compareTo(hijo.getDato()) < 0) {
-                    if (recorrido.getLd() != null) {
-                        ancestros.push(recorrido);
-                        recorrido = (NodoEntrada) recorrido.getLd();
-                    } else {
-                        return null;
-                    }
-                } else {
-                    if (recorrido.getLi() != null) {
-                        ancestros.push(recorrido);
-                        recorrido = (NodoEntrada) recorrido.getLi();
-                    } else {
-                        return null;
-                    }
-                }
-            }
-        }
-        return recorrido;
-    }
-
     public String ingresarNuevaPalabra(Comparable dato, String datos) {
         String resultado = "La palabra " + dato + " ya existe en el diccionario";
         if (buscar(dato) == null) {
@@ -534,9 +563,9 @@ public class Diccionario<T extends Comparable> {
             String sin[] = sinonimos.split("\\,");
             ArbolAVL arbolSinonimos = new ArbolAVL();
             for (int i = 0; i < sin.length; i++) {
-                arbolSinonimos.insertarDato(sin[i]);
+                arbolSinonimos.insertarDato(sin[i].trim());
                 if (buscar(sin[i]) == null) {
-                    NodoEntrada nuevoNodo = new NodoEntrada(sin[i]);
+                    NodoEntrada nuevoNodo = new NodoEntrada(sin[i].trim());
                     nuevoNodo.setSignificado(significado);
                     NodoAVL rootsinonimos;
                     ArbolAVL arbolitosin = new ArbolAVL();
@@ -545,9 +574,9 @@ public class Diccionario<T extends Comparable> {
                     nuevoNodo.setSinonimos(rootsinonimos);
                     insertarEntrada(nuevoNodo);
                 } else {
-                    NodoEntrada NodoModificado = buscar(sin[i]);
+                    NodoEntrada NodoModificado = buscar(sin[i].trim());
                     NodoModificado.setSignificado(significado);
-                    NodoAVL raizsin = (buscar(sin[i])).getSinonimos();
+                    NodoAVL raizsin = (buscar(sin[i].trim())).getSinonimos();
                     if (raizsin != null) {
                         NodoAVL nodoEncontrado = existeNodoAVL(raizsin, palabra);
                         if (nodoEncontrado == null) {
@@ -557,11 +586,11 @@ public class Diccionario<T extends Comparable> {
                             String listado[] = listadosinonimos.split("\\,");
                             ArbolAVL arbolSin = new ArbolAVL();
                             for (int j = 0; j < listado.length; j++) {
-                                arbolSin.insertarDato(listado[j]);
+                                arbolSin.insertarDato(listado[j].trim());
                                 //pendiente quitar los espacios    
                             }
                             raiznueva = arbolSin.getRoot();
-                            buscar(sin[i]).setSinonimos(raiznueva);
+                            buscar(sin[i].trim()).setSinonimos(raiznueva);
                         }
                     } else {
                         ArbolAVL arbolSin = new ArbolAVL();
@@ -569,8 +598,7 @@ public class Diccionario<T extends Comparable> {
                         NodoAVL raizarbol = arbolSin.getRoot();
                         NodoModificado.setSinonimos(raizarbol);
                     }
-                }
-                //pendiente quitar los espacios   
+                }  
             }
             raizSinonimos = arbolSinonimos.getRoot();
 
@@ -578,12 +606,11 @@ public class Diccionario<T extends Comparable> {
             String ant[] = antonimos.split("\\,");
             ArbolAVL arbolAntonimos = new ArbolAVL();
             for (int i = 0; i < ant.length; i++) {
-                arbolAntonimos.insertarDato(ant[i]);
-                if (buscar(ant[i]) == null) {
-                    NodoEntrada nuevoNodo = new NodoEntrada(ant[i]);
+                arbolAntonimos.insertarDato(ant[i].trim());
+                if (buscar(ant[i].trim()) == null) {
+                    NodoEntrada nuevoNodo = new NodoEntrada(ant[i].trim());
                     insertarEntrada(nuevoNodo);
                 }
-                //pendiente quitar los espacios  
             }
             raizAntonimos = arbolAntonimos.getRoot();
 
