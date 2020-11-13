@@ -479,8 +479,7 @@ public class DiccionarioVista extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(palabracambiar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(26, 26, 26)
-                                .addComponent(ModificarPalabra)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(ModificarPalabra))))
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -716,8 +715,8 @@ public class DiccionarioVista extends javax.swing.JFrame {
 
     private void BuscarPalabraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarPalabraActionPerformed
         // TODO add your handling code here:
-        NodoEntrada palabraenbusqueda = diccionario.buscar(busquedapalabra.getText());
-        String dato = busquedapalabra.getText();
+        NodoEntrada palabraenbusqueda = diccionario.buscar(busquedapalabra.getText().toLowerCase());
+        String dato = busquedapalabra.getText().toLowerCase();
         if ("".equals(dato)) {
             JOptionPane.showMessageDialog(null, "Ingrese una palabra para realizar la busqueda");
         } else {
@@ -735,13 +734,13 @@ public class DiccionarioVista extends javax.swing.JFrame {
     private void IngresarPalabraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IngresarPalabraActionPerformed
         // TODO add your handling code here:
         String cadena = "";
-        System.out.println(diccionario.buscar(palabra.getText()));
-        if (diccionario.buscar(palabra.getText()) != null) {
+        //System.out.println(diccionario.buscar(palabra.getText().toLowerCase()));
+        if (diccionario.buscar(palabra.getText().toLowerCase()) != null) {
             JOptionPane.showMessageDialog(null, "La palabra ya existe en el diccionario, no puede ser creada");
         } else {
             try {
-                cadena = palabra.getText() + "/DSSA:\"" + significado.getText() + "\":\"" + sinonimos.getText() + "\":\"" + antonimos.getText() + "\"";
-                diccionario.ingresarNuevaPalabra(palabra.getText(), cadena);
+                cadena = palabra.getText().toLowerCase() + "/DSSA:\"" + significado.getText() + "\":\"" + sinonimos.getText().toLowerCase() + "\":\"" + antonimos.getText().toLowerCase() + "\"";
+                diccionario.ingresarNuevaPalabra(palabra.getText().toLowerCase(), cadena);
                 JOptionPane.showMessageDialog(null, "Palabra ingresada correctamente");
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Error al ingresar datos, verifique que todos los campos esten completos");
@@ -756,31 +755,39 @@ public class DiccionarioVista extends javax.swing.JFrame {
     }//GEN-LAST:event_IngresarPalabraActionPerformed
 
     private void CargarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CargarArchivoActionPerformed
+        diccionario.setCantidad(0);
         try {
             // TODO add your handling code here:
             diccionario.load();
         } catch (Exception ex) {
             Logger.getLogger(DiccionarioVista.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //imprimir.setText(diccionario.imprimirInOrden(diccionario.getRoot()));
+        int cantidadPalabras = diccionario.getCantidad();
+        JOptionPane.showMessageDialog(null, "Archivo cargado correctamente, "+cantidadPalabras+" palabras ingresadas");
     }//GEN-LAST:event_CargarArchivoActionPerformed
 
     private void consultardatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultardatosActionPerformed
         // TODO add your handling code here:
         try {
-            NodoEntrada palabra = diccionario.buscar(busquedapalabra.getText());
+            NodoEntrada palabra = diccionario.buscar(busquedapalabra.getText().toLowerCase());
             int seleccion = criteriosbusqueda.getSelectedIndex();
             switch (seleccion) {
                 case 0:
                     sigencontrado.setText(palabra.getSignificado());
+                    sinencontrado.setText("");
+                    antencontrado.setText("");
                     break;
                 case 1:
                     String sin = diccionario.obtenerResultadosArbolesAVL(palabra.getSinonimos());
+                    System.out.println("sale sinonimos> "+sin);
                     if (sin == null) {
                         sinencontrado.setText("Sin registros");
                     } else {
                         sinencontrado.setText(sin);
                     }
+                    antencontrado.setText("");
+                    sigencontrado.setText("");
+                    
                     break;
                 case 2:
                     String ant = diccionario.obtenerResultadosArbolesAVL(palabra.getAntonimos());
@@ -789,6 +796,8 @@ public class DiccionarioVista extends javax.swing.JFrame {
                     } else {
                         antencontrado.setText(ant);
                     }
+                    sigencontrado.setText("");
+                    sinencontrado.setText("");
                     break;
                 case 3:
                     sigencontrado.setText(palabra.getSignificado());
@@ -831,7 +840,7 @@ public class DiccionarioVista extends javax.swing.JFrame {
     private void ModificarPalabraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarPalabraActionPerformed
         // TODO add your handling code here:
                 
-        String palabra = palabracambiar.getText().trim();
+        String palabra = palabracambiar.getText().trim().toLowerCase();
         String[] atributosPalabra = {"Palabra", "Significado", "Sinonimos", "Antonimos"};
         JComboBox modificarAtributo = new JComboBox(atributosPalabra);
         
@@ -845,7 +854,7 @@ public class DiccionarioVista extends javax.swing.JFrame {
             switch(opcion){
                 case "Palabra":
                     String palabraNueva = JOptionPane.showInputDialog("Ingrese la nueva palabra: ");
-                    JOptionPane.showMessageDialog(null, diccionario.modificarEntrada(palabra, palabraNueva));
+                    JOptionPane.showMessageDialog(null, diccionario.modificarEntrada(palabra, palabraNueva.toLowerCase()));
                     palabracambiar.setText("");
                 break;
                 case "Significado":
@@ -855,12 +864,12 @@ public class DiccionarioVista extends javax.swing.JFrame {
                 break;
                 case "Sinonimos":
                     String sinonimoNuevo = JOptionPane.showInputDialog("Ingrese los nuevos sinonimos: ");
-                    JOptionPane.showMessageDialog(null, diccionario.modificarSinonimos(palabra, sinonimoNuevo));
+                    JOptionPane.showMessageDialog(null, diccionario.modificarSinonimos(palabra, sinonimoNuevo.toLowerCase()));
                     palabracambiar.setText("");
                 break;
                 case "Antonimos":
                     String antonimoNuevo = JOptionPane.showInputDialog("Ingrese los nuevos antonimos: ");
-                    JOptionPane.showMessageDialog(null, diccionario.modificarAntonimos(palabra, antonimoNuevo));
+                    JOptionPane.showMessageDialog(null, diccionario.modificarAntonimos(palabra, antonimoNuevo.toLowerCase()));
                     palabracambiar.setText("");
                 break;
 
